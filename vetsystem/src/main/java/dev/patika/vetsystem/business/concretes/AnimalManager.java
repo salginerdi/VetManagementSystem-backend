@@ -7,6 +7,8 @@ import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.animal.AnimalSaveRequest;
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
 import dev.patika.vetsystem.entities.Animal;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,48 +17,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class AnimalManager implements IAnimalService {
     private final AnimalRepo animalRepo;
-
-    public AnimalManager(AnimalRepo animalRepo) {
-        this.animalRepo = animalRepo;
-    }
-
-    @Override
-    public Animal save(Animal animal) {
-        return this.animalRepo.save(animal);
-    }
-
-    @Override
-    public Animal get(long id) {
-        return this.animalRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
-    }
-
-    @Override
-    public Page<Animal> cursor(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return this.animalRepo.findAll(pageable);
-    }
-
-    @Override
-    public Animal update(Animal animal) {
-        this.get(animal.getId());
-        return this.animalRepo.save(animal);
-    }
-
-
-    @Override
-    public boolean delete(long id) {
-        Animal animal = this.get(id);
-        this.animalRepo.delete(animal);
-        return true;
-    }
-
-    // 16-Hayvanları isme göre filtrelemek
-    @Override
-    public List<Animal> findAnimalsByName(String name) {
-        return animalRepo.findAnimalsByName(name);
-    }
+    private final ModelMapperService modelMapper;
 
     @Override
     public Animal getById(Long id) {

@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class CustomerManager implements ICustomerService {
-
     private final CustomerRepo customerRepo;
     private final ModelMapperService modelMapper;
 

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AvailableDateManager implements IAvailableDateService {
     private final AvailableDateRepo availableDateRepo;
     private final ModelMapperService modelMapper;

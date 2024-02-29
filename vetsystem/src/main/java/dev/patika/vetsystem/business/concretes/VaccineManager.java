@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class VaccineManager implements IVaccineService {
     private final VaccineRepo vaccineRepo;
     private ModelMapperService modelMapper;
@@ -60,6 +61,17 @@ public class VaccineManager implements IVaccineService {
         return modelMapper
                 .forResponse()
                 .map(vaccineRepo.save(saveVaccine), VaccineResponse.class);
+    }
+
+    private void validateVaccine(VaccineSaveRequest vaccineSaveRequest) {
+        Optional<Vaccine> checkVaccine = this.vaccineRepo.validateVaccine(
+                vaccineSaveRequest.getCode(),
+                vaccineSaveRequest.getAnimal().getId(),
+                vaccineSaveRequest.getProtectionStartDate()
+        );
+        if (checkVaccine.isPresent()) {
+            throw new RuntimeException("Vaccine is still in effect");
+        }
     }
 
     @Override

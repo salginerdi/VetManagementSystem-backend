@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AppointmentManager implements IAppointmentService {
     private final AppointmentRepo appointmentRepo;
     private final IAvailableDateService availableDateService;
