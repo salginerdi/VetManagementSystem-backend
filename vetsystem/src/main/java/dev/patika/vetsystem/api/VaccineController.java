@@ -6,11 +6,11 @@ import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.vaccine.VaccineSaveRequest;
-import dev.patika.vetsystem.dto.request.vaccine.VaccineUpdateRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.animal.AnimalResponse;
-import dev.patika.vetsystem.dto.response.vaccine.VaccineResponse;
+import dev.patika.vetsystem.dto.vaccine.VaccineSaveRequest;
+import dev.patika.vetsystem.dto.vaccine.VaccineUpdateRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.vaccine.VaccineResponse;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Vaccine;
 import jakarta.validation.Valid;
@@ -75,7 +75,7 @@ public class VaccineController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<VaccineResponse>> cursor(
+    public ResultData<PageResponse<VaccineResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

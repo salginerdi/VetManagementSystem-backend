@@ -5,19 +5,16 @@ import dev.patika.vetsystem.business.abstracts.IAppointmentService;
 import dev.patika.vetsystem.business.abstracts.IAvailableDateService;
 import dev.patika.vetsystem.business.abstracts.IDoctorService;
 import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
-import dev.patika.vetsystem.core.exception.NotFoundException;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
-import dev.patika.vetsystem.core.utilies.Msg;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.appointment.AppointmentSaveRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.animal.AnimalResponse;
-import dev.patika.vetsystem.dto.response.appointment.AppointmentResponse;
-import dev.patika.vetsystem.dto.response.doctor.DoctorResponse;
+import dev.patika.vetsystem.dto.appointment.AppointmentSaveRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.appointment.AppointmentResponse;
+import dev.patika.vetsystem.dto.doctor.DoctorResponse;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Appointment;
-import dev.patika.vetsystem.entities.AvailableDate;
 import dev.patika.vetsystem.entities.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -122,7 +118,7 @@ public class AppointmentController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<AppointmentResponse>> cursor(
+    public ResultData<PageResponse<AppointmentResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

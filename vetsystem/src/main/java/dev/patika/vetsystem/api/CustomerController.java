@@ -6,11 +6,11 @@ import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.customer.CustomerSaveRequest;
-import dev.patika.vetsystem.dto.request.customer.CustomerUpdateRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.animal.AnimalResponse;
-import dev.patika.vetsystem.dto.response.customer.CustomerResponse;
+import dev.patika.vetsystem.dto.customer.CustomerSaveRequest;
+import dev.patika.vetsystem.dto.customer.CustomerUpdateRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.customer.CustomerResponse;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Customer;
 import jakarta.validation.Valid;
@@ -60,7 +60,7 @@ public class CustomerController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<CustomerResponse>> cursor(
+    public ResultData<PageResponse<CustomerResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

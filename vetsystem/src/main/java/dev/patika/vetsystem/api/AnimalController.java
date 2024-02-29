@@ -6,12 +6,12 @@ import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.animal.AnimalSaveRequest;
-import dev.patika.vetsystem.dto.request.animal.AnimalUpdateRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.animal.AnimalResponse;
-import dev.patika.vetsystem.dto.response.customer.CustomerResponse;
-import dev.patika.vetsystem.dto.response.vaccine.VaccineResponse;
+import dev.patika.vetsystem.dto.animal.AnimalSaveRequest;
+import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.customer.CustomerResponse;
+import dev.patika.vetsystem.dto.vaccine.VaccineResponse;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Customer;
 import dev.patika.vetsystem.entities.Vaccine;
@@ -97,7 +97,7 @@ public class AnimalController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<AnimalResponse>> cursor(
+    public ResultData<PageResponse<AnimalResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

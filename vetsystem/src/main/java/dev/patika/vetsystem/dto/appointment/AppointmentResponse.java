@@ -1,5 +1,7 @@
-package dev.patika.vetsystem.dto.response.appointment;
+package dev.patika.vetsystem.dto.appointment;
 
+import dev.patika.vetsystem.dto.animal.OnlyAnimalResponse;
+import dev.patika.vetsystem.dto.doctor.OnlyDoctorResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,6 @@ import java.time.LocalDateTime;
 public class AppointmentResponse {
     private Long id;
     private LocalDateTime appointmentDate;
-    private Long animalId;
-    private Long doctorId;
+    private OnlyAnimalResponse animal;
+    private OnlyDoctorResponse doctor;
 }

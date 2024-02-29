@@ -1,6 +1,7 @@
-package dev.patika.vetsystem.dto.response.animal;
+package dev.patika.vetsystem.dto.animal;
 
-import dev.patika.vetsystem.dto.response.vaccine.VaccineResponse;
+import dev.patika.vetsystem.dto.customer.OnlyCustomerResponse;
+import dev.patika.vetsystem.dto.vaccine.OnlyVaccineResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,6 @@ public class AnimalResponse {
     private String colour;
     private LocalDate dateOfBirth;
     private Long customerId;
-    // private List<VaccineResponse> vaccines;
+    private OnlyCustomerResponse customer;
+    private List<OnlyVaccineResponse> vaccines;
 }

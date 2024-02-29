@@ -1,7 +1,8 @@
-package dev.patika.vetsystem.dto.request.doctor;
+package dev.patika.vetsystem.dto.doctor;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DoctorSaveRequest {
+public class DoctorUpdateRequest {
+    @Positive
+    private Long id;
     @NotNull(message = "Doktorun adı alanı boşbırakılamaz!")
     private String name;
     @NotNull(message = "Doktorun telefon numarası alanı boş bırakılamaz!")

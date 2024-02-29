@@ -6,11 +6,11 @@ import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.availableDate.AvailableDateSaveRequest;
-import dev.patika.vetsystem.dto.request.availableDate.AvailableDateUpdateRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.doctor.DoctorResponse;
-import dev.patika.vetsystem.dto.response.availableDate.AvailableDateResponse;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateSaveRequest;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateUpdateRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.doctor.DoctorResponse;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateResponse;
 import dev.patika.vetsystem.entities.Doctor;
 import dev.patika.vetsystem.entities.AvailableDate;
 import jakarta.validation.Valid;
@@ -69,7 +69,7 @@ public class AvailableDateController {
 
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<AvailableDateResponse>> cursor(
+    public ResultData<PageResponse<AvailableDateResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

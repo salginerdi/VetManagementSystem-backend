@@ -2,9 +2,8 @@ package dev.patika.vetsystem.core.utilies;
 
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
-import dev.patika.vetsystem.dto.response.CursorResponse;
+import dev.patika.vetsystem.dto.PageResponse;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 
 public class ResultHelper {
     public static <T> ResultData<T> created(T data) {
@@ -31,8 +30,8 @@ public class ResultHelper {
         return new Result(false, msg, "404");
     }
 
-    public static <T> ResultData<CursorResponse<T>> cursor(Page<T> pageData) {
-        CursorResponse<T> cursor = new CursorResponse<>();
+    public static <T> ResultData<PageResponse<T>> cursor(Page<T> pageData) {
+        PageResponse<T> cursor = new PageResponse<>();
         cursor.setItems(pageData.getContent());
         cursor.setPageNumber(pageData.getNumber());
         cursor.setPageSize(pageData.getSize());

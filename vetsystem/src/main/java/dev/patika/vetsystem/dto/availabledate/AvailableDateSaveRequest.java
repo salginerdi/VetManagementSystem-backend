@@ -1,5 +1,6 @@
-package dev.patika.vetsystem.dto.request.availableDate;
+package dev.patika.vetsystem.dto.availabledate;
 
+import dev.patika.vetsystem.dto.doctor.DoctorUpdateRequest;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.Future;
@@ -16,10 +17,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class AvailableDateSaveRequest {
     @NotNull(message = "Müsait zaman alanı boş bırakılamaz!")
-    @Temporal(TemporalType.DATE)
     @FutureOrPresent
     private LocalDate availableDate;
-    @NotNull(message = "Randevu zamanı belirlemek için doktor ID'si seçmelisiniz!")
-    private Long doctorId;
 
+    private DoctorUpdateRequest doctor;
 }

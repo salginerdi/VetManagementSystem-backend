@@ -1,4 +1,4 @@
-package dev.patika.vetsystem.dto.response.customer;
+package dev.patika.vetsystem.dto.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerResponse {
+public class OnlyCustomerResponse {
     private Long id;
     private String name;
     private String phone;

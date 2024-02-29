@@ -5,10 +5,10 @@ import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.core.result.Result;
 import dev.patika.vetsystem.core.result.ResultData;
 import dev.patika.vetsystem.core.utilies.ResultHelper;
-import dev.patika.vetsystem.dto.request.doctor.DoctorSaveRequest;
-import dev.patika.vetsystem.dto.request.doctor.DoctorUpdateRequest;
-import dev.patika.vetsystem.dto.response.CursorResponse;
-import dev.patika.vetsystem.dto.response.doctor.DoctorResponse;
+import dev.patika.vetsystem.dto.doctor.DoctorSaveRequest;
+import dev.patika.vetsystem.dto.doctor.DoctorUpdateRequest;
+import dev.patika.vetsystem.dto.PageResponse;
+import dev.patika.vetsystem.dto.doctor.DoctorResponse;
 import dev.patika.vetsystem.entities.Doctor;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -53,7 +53,7 @@ public class DoctorController {
     // Listeleme işlemi
     @GetMapping()
     @ResponseStatus(HttpStatus.OK)
-    public ResultData<CursorResponse<DoctorResponse>> cursor(
+    public ResultData<PageResponse<DoctorResponse>> cursor(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {

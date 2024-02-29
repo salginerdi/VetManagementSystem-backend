@@ -1,5 +1,6 @@
-package dev.patika.vetsystem.dto.request.availableDate;
+package dev.patika.vetsystem.dto.availabledate;
 
+import dev.patika.vetsystem.dto.doctor.DoctorUpdateRequest;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -17,8 +18,10 @@ import java.time.LocalDate;
 public class AvailableDateUpdateRequest {
     @Positive
     private Long id;
+
     @NotNull(message = "Müsait zaman alanı boş bırakılamaz!")
-    @Temporal(TemporalType.TIME)
     @FutureOrPresent
     private LocalDate availableDate;
+
+    private DoctorUpdateRequest doctor;
 }

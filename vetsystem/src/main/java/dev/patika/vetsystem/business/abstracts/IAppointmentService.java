@@ -1,6 +1,5 @@
 package dev.patika.vetsystem.business.abstracts;
 
-import dev.patika.vetsystem.dto.request.appointment.AppointmentSaveRequest;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Appointment;
 import dev.patika.vetsystem.entities.Doctor;
@@ -8,7 +7,6 @@ import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface IAppointmentService {
     Appointment save(Appointment appointment);
