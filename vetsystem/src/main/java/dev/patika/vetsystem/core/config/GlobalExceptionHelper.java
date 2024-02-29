@@ -30,4 +30,5 @@ public class GlobalExceptionHelper {
 
         return new ResponseEntity<>(ResultHelper.validateError(validationErrorList), HttpStatus.BAD_REQUEST);
     }
+
 }
