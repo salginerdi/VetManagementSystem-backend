@@ -1,60 +1,89 @@
 package dev.patika.vetsystem.business.concretes;
 
 import dev.patika.vetsystem.business.abstracts.IAvailableDateService;
-import dev.patika.vetsystem.core.exception.NotFoundException;
-import dev.patika.vetsystem.core.utilies.Msg;
+import dev.patika.vetsystem.core.config.modelMapper.ModelMapperService;
 import dev.patika.vetsystem.dao.AvailableDateRepo;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateResponse;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateSaveRequest;
+import dev.patika.vetsystem.dto.availabledate.AvailableDateUpdateRequest;
+import dev.patika.vetsystem.dto.customer.CustomerResponse;
+import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.AvailableDate;
+import dev.patika.vetsystem.entities.Customer;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AvailableDateManager implements IAvailableDateService {
     private final AvailableDateRepo availableDateRepo;
-
-    public AvailableDateManager(AvailableDateRepo availableDateRepo) {
-        this.availableDateRepo = availableDateRepo;
-    }
-
+    private final ModelMapperService modelMapper;
 
     @Override
-    public AvailableDate save(AvailableDate availableDate) {
-        return this.availableDateRepo.save(availableDate);
+    public AvailableDate getById(Long id) {
+        return availableDateRepo.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Available Date " + id + " not found"));
     }
 
     @Override
-    public AvailableDate get(long id) {
-        return this.availableDateRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
+    public AvailableDateResponse getResponseById(Long id) {
+        return modelMapper
+                .forResponse()
+                .map(getById(id), AvailableDateResponse.class);
     }
 
     @Override
-    public Page<AvailableDate> cursor(int page, int pageSize) {
+    public List<AvailableDateResponse> getPageResponse(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return this.availableDateRepo.findAll(pageable);
+
+        Page<AvailableDate> availableDatePage = availableDateRepo.findAll(pageable);
+
+        return availableDatePage.stream().map(availableDate ->
+                        modelMapper
+                                .forResponse()
+                                .map(availableDate, AvailableDateResponse.class))
+                .toList();
     }
 
     @Override
-    public AvailableDate update(AvailableDate availableDate) {
-        this.get(availableDate.getId());
-        return this.availableDateRepo.save(availableDate);
-    }
+    public AvailableDateResponse create(AvailableDateSaveRequest availableDateSaveRequest) {
+        AvailableDate saveAvailableDate = this.modelMapper
+                .forRequest()
+                .map(availableDateSaveRequest, AvailableDate.class);
 
-    // 22-Randevu kaydı oluştururken doktorun girilen tarihte müsait günü olup olmadığı, eğer ki müsait günü varsa randevu
-    // kayıtlarında girilen saatte başka bir randevusu olup olmadığı kontrol edilir.
-    @Override
-    public AvailableDate findByDoctorIdAndAvailableDate(Long doctorId, LocalDate requestedDate) {
-        return this.availableDateRepo.findByDoctorIdAndAvailableDate(doctorId, requestedDate).
-                orElseThrow(() -> new NotFoundException(Msg.NOT_AVAILABLE));
+        return modelMapper
+                .forResponse()
+                .map(availableDateRepo.save(saveAvailableDate), AvailableDateResponse.class);
     }
 
     @Override
-    public boolean delete(long id) {
-        AvailableDate availableDate = this.get(id);
-        this.availableDateRepo.delete(availableDate);
-        return true;
+    public AvailableDateResponse update(AvailableDateUpdateRequest availableDateUpdateRequest) {
+        AvailableDate doesAvailableDateExist = getById(availableDateUpdateRequest.getId());
+
+        modelMapper
+                .forRequest()
+                .map(availableDateUpdateRequest, doesAvailableDateExist);
+
+        return modelMapper
+                .forResponse()
+                .map(availableDateRepo.save(doesAvailableDateExist), AvailableDateResponse.class);
+    }
+
+    @Override
+    public void delete(Long id) {
+        availableDateRepo.delete(getById(id));
+    }
+
+    @Override
+    public Optional<AvailableDate> findByDoctorIdAndAvailableDate(Long doctorId, LocalDate requestedDate) {
+        return availableDateRepo.findByDoctorIdAndAvailableDate(doctorId, requestedDate);
     }
 }

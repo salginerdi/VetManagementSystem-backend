@@ -1,14 +1,17 @@
 package dev.patika.vetsystem.business.concretes;
 
 import dev.patika.vetsystem.business.abstracts.IDoctorService;
-import dev.patika.vetsystem.core.exception.NotFoundException;
-import dev.patika.vetsystem.core.utilies.Msg;
+import dev.patika.vetsystem.business.abstracts.IDoctorService;
+import dev.patika.vetsystem.core.config.modelMapper.ModelMapperService;
+import dev.patika.vetsystem.dao.DoctorRepo;
 import dev.patika.vetsystem.dao.DoctorRepo;
 import dev.patika.vetsystem.entities.Doctor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DoctorManager implements IDoctorService {

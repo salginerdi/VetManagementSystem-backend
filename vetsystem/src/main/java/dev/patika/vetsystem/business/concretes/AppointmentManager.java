@@ -2,22 +2,22 @@ package dev.patika.vetsystem.business.concretes;
 
 import dev.patika.vetsystem.business.abstracts.IAppointmentService;
 import dev.patika.vetsystem.business.abstracts.IAvailableDateService;
-import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
-import dev.patika.vetsystem.core.exception.NotFoundException;
-import dev.patika.vetsystem.core.result.ResultData;
-import dev.patika.vetsystem.core.utilies.Msg;
-import dev.patika.vetsystem.core.utilies.ResultHelper;
+import dev.patika.vetsystem.core.config.modelMapper.ModelMapperService;
 import dev.patika.vetsystem.dao.AppointmentRepo;
-import dev.patika.vetsystem.dto.appointment.AppointmentSaveRequest;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.appointment.AppointmentResponse;
+import dev.patika.vetsystem.dto.appointment.AppointmentSaveRequest;
+import dev.patika.vetsystem.dto.appointment.AppointmentUpdateRequest;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Appointment;
 import dev.patika.vetsystem.entities.AvailableDate;
-import dev.patika.vetsystem.entities.Doctor;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.webjars.NotFoundException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,91 +27,88 @@ import java.util.Optional;
 public class AppointmentManager implements IAppointmentService {
     private final AppointmentRepo appointmentRepo;
     private final IAvailableDateService availableDateService;
-    private final IModelMapperService modelMapperService;
+    private final ModelMapperService modelMapper;
 
-    public AppointmentManager(AppointmentRepo appointmentRepo,
-                              IAvailableDateService availableDateService,
-                              IModelMapperService modelMapperService) {
-        this.appointmentRepo = appointmentRepo;
-        this.availableDateService = availableDateService;
-        this.modelMapperService = modelMapperService;
+    @Override
+    public Appointment getById(Long id) {
+        return appointmentRepo.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Appointment not found" + id));
     }
 
-    // 22-Randevu kaydı oluştururken doktorun girilen tarihte müsait günü olup olmadığı
-    // eğer ki varsa randevu kayıtlarında girilen saatte başka bir randevusu olup olmadığı kontrol edilir.
-    public ResultData<AppointmentResponse> save(AppointmentSaveRequest appointmentSaveRequest) {
+    @Override
+    public AppointmentResponse getResponseById(Long id) {
+        return modelMapper.forResponse().map(getById(id), AppointmentResponse.class);
+    }
+
+    @Override
+    public List<AppointmentResponse> getPageResponse(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize);
+
+        Page<Appointment> appointmentPage = appointmentRepo.findAll(pageable);
+
+        return appointmentPage.stream().map(
+                        appointment ->
+                                modelMapper
+                                        .forResponse()
+                                        .map(appointment, AppointmentResponse.class))
+                .toList();
+    }
+
+
+    @Override
+    public AppointmentResponse create(AppointmentSaveRequest appointmentSaveRequest) {
         checkValidityOf(appointmentSaveRequest);
-        Appointment appointmentToBeSaved = this.modelMapperService.forRequest().map(appointmentSaveRequest, Appointment.class);
-        appointmentToBeSaved.setId(null);
 
-        // 22-Her doktor için sadece saat başı randevu oluşturulabilir.
-        LocalDateTime requestedDateTime = appointmentSaveRequest.getAppointmentDate();
-        LocalDateTime truncatedDateTime = requestedDateTime.withMinute(0).withSecond(0).withNano(0);
+        Appointment saveAppointment = this.modelMapper
+                .forRequest()
+                .map(appointmentSaveRequest, Appointment.class);
 
-        // 22-Doktorun mevcut randevu saatlerini kontrol edilir, sadece saat başlarında yeni randevu oluşturulmasına izin verilir.
-        Optional<Appointment> hourConflict = this.appointmentRepo.checkForConflictingAppointmentHoursByDoctorAndHour(truncatedDateTime, appointmentSaveRequest.getDoctorId());
-        if (hourConflict.isPresent())
-            throw new NotFoundException(Msg.NOT_AVAILABLE);
-
-        this.appointmentRepo.save(appointmentToBeSaved);
-        AppointmentResponse appointmentResponse = this.modelMapperService.forResponse().map(appointmentToBeSaved, AppointmentResponse.class);
-        return ResultHelper.success(appointmentResponse);
-
+        return modelMapper
+                .forResponse()
+                .map(appointmentRepo.save(saveAppointment), AppointmentResponse.class);
     }
 
     private void checkValidityOf(AppointmentSaveRequest appointmentSaveRequest) {
-        AvailableDate checkIfThereIsAvailableDoctor = this.availableDateService.findByDoctorIdAndAvailableDate(
-                appointmentSaveRequest.getDoctorId(),
+       Optional<AvailableDate> checkIfThereIsAvailableDoctor = this.availableDateService.findByDoctorIdAndAvailableDate(
+                appointmentSaveRequest.getDoctor().getId(),
                 appointmentSaveRequest.getAppointmentDate().toLocalDate()
         );
+       if (checkIfThereIsAvailableDoctor.isEmpty()) {
+           throw new NotFoundException("Doctor is not available at this date");
+       }
+
         Optional<Appointment> hourConflict = this.appointmentRepo.checkForConflictingAppointmentHours(
                 appointmentSaveRequest.getAppointmentDate()
         );
         if (hourConflict.isPresent())
-            throw new NotFoundException(Msg.NOT_AVAILABLE);
-    }
-
-
-    @Override
-    public Appointment save(Appointment appointment) {
-        return this.appointmentRepo.save(appointment);
+            throw new NotFoundException("There is an hour conflict present");
     }
 
     @Override
-    public Appointment get(long id) {
-        return this.appointmentRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
+    public AppointmentResponse update(AppointmentUpdateRequest appointmentUpdateRequest) {
+        Appointment doesAppointmentExist = getById(appointmentUpdateRequest.getId());
+
+        modelMapper
+                .forRequest()
+                .map(appointmentUpdateRequest, doesAppointmentExist);
+
+        return modelMapper
+                .forResponse()
+                .map(appointmentRepo.save(doesAppointmentExist), AppointmentResponse.class);
     }
 
     @Override
-    public Page<Appointment> cursor(int page, int pageSize) {
-        Pageable pageable = PageRequest.of(page, pageSize);
-        return this.appointmentRepo.findAll(pageable);
+    public void delete(Long id) {
+        appointmentRepo.delete(getById(id));
     }
 
     @Override
-    public Appointment update(Appointment appointment) {
-        this.get(appointment.getId());
-        return this.appointmentRepo.save(appointment);
+    public List<Appointment> findByAppointmentDateAndDoctorId(LocalDateTime appointmentDate, Long doctorId) {
+        return appointmentRepo.findByAppointmentDateAndDoctorId(appointmentDate, doctorId);
     }
 
     @Override
-    public boolean delete(long id) {
-        Appointment appointment = this.get(id);
-        this.appointmentRepo.delete(appointment);
-        return true;
+    public List<Appointment> findByAppointmentDateAndAnimalId(LocalDateTime appointmentDate, Long animalId) {
+        return appointmentRepo.findByAppointmentDateAndAnimalId(appointmentDate, animalId);
     }
-
-    // 24-Doktor ve randevuya göre filtreleme
-    @Override
-    public List<Appointment> findByAppointmentDateAndDoctor(LocalDateTime appointmentDate, Doctor doctor) {
-        return this.appointmentRepo.findByAppointmentDateAndDoctor(appointmentDate, doctor);
-    }
-
-    // 23-Hayvan ve randevuya göre filtreleme
-    @Override
-    public List<Appointment> findByAppointmentDateAndAnimal(LocalDateTime appointmentDate, Animal animal) {
-        return this.appointmentRepo.findByAppointmentDateAndAnimal(appointmentDate, animal);
-    }
-
-
 }

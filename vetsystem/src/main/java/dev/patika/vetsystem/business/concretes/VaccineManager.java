@@ -1,11 +1,15 @@
 package dev.patika.vetsystem.business.concretes;
 
 import dev.patika.vetsystem.business.abstracts.IVaccineService;
-import dev.patika.vetsystem.core.exception.NotFoundException;
-import dev.patika.vetsystem.core.utilies.Msg;
+import dev.patika.vetsystem.core.config.modelMapper.ModelMapperService;
 import dev.patika.vetsystem.dao.VaccineRepo;
+import dev.patika.vetsystem.dto.animal.AnimalResponse;
+import dev.patika.vetsystem.dto.vaccine.VaccineResponse;
+import dev.patika.vetsystem.dto.vaccine.VaccineSaveRequest;
+import dev.patika.vetsystem.dto.vaccine.VaccineUpdateRequest;
 import dev.patika.vetsystem.entities.Vaccine;
-import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,58 +22,73 @@ import java.util.Optional;
 @Service
 public class VaccineManager implements IVaccineService {
     private final VaccineRepo vaccineRepo;
+    private ModelMapperService modelMapper;
 
-    public VaccineManager(VaccineRepo vaccineRepo) {
-        this.vaccineRepo = vaccineRepo;
+    @Override
+    public Vaccine getById(Long id) {
+        return vaccineRepo.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Vaccine not found" + id));
     }
 
     @Override
-    public Vaccine save(Vaccine vaccine) {
-        validateVaccine(vaccine);
-        return this.vaccineRepo.save(vaccine);
-    }
-
-    // Eğer hastaya ait aynı tip aşının koruyuculuk bitiş tarihi daha gelmemiş ise sisteme yeni aşı girilememelidir.
-    private void validateVaccine(Vaccine vaccine) {
-        Optional<Vaccine> checkVaccine = this.vaccineRepo.validateVaccine(
-                vaccine.getCode(),
-                vaccine.getAnimal().getId(),
-                vaccine.getProtectionStartDate()
-        );
-        if (checkVaccine.isPresent()) {
-            throw new NotFoundException(Msg.ADD_ERROR);
-        }
+    public VaccineResponse getResponseById(Long id) {
+        return modelMapper.forResponse().map(getById(id), VaccineResponse.class);
     }
 
     @Override
-    public Vaccine get(long id) {
-        return this.vaccineRepo.findById(id).orElseThrow(() -> new NotFoundException(Msg.NOT_FOUND));
-    }
-
-    @Override
-    public Page<Vaccine> cursor(int page, int pageSize) {
+    public List<VaccineResponse> getPageResponse(int page, int pageSize) {
         Pageable pageable = PageRequest.of(page, pageSize);
-        return this.vaccineRepo.findAll(pageable);
+
+        Page<Vaccine> vaccinePage = vaccineRepo.findAll(pageable);
+
+        return vaccinePage.stream().map(
+                        vaccine ->
+                                modelMapper
+                                        .forResponse()
+                                        .map(vaccine, VaccineResponse.class))
+                .toList();
     }
 
     @Override
-    public Vaccine update(Vaccine vaccine) {
-        this.get(vaccine.getId());
-        return this.vaccineRepo.save(vaccine);
+    public VaccineResponse create(VaccineSaveRequest vaccineSaveRequest) {
+        validateVaccine(vaccineSaveRequest);
+
+        Vaccine saveVaccine = this.modelMapper
+                .forRequest()
+                .map(vaccineSaveRequest, Vaccine.class);
+
+        return modelMapper
+                .forResponse()
+                .map(vaccineRepo.save(saveVaccine), VaccineResponse.class);
     }
 
     @Override
-    public boolean delete(long id) {
-        Vaccine vaccine = this.get(id);
-        this.vaccineRepo.delete(vaccine);
-        return true;
+    public VaccineResponse update(VaccineUpdateRequest vaccineUpdateRequest) {
+        Vaccine doesVaccineExist = getById(vaccineUpdateRequest.getId());
+
+        modelMapper
+                .forRequest()
+                .map(vaccineUpdateRequest, doesVaccineExist);
+
+        return modelMapper
+                .forResponse()
+                .map(vaccineRepo.save(doesVaccineExist), VaccineResponse.class);
     }
 
-    // 21-Kullanıcının aşı koruyuculuk bitiş tarihi yaklaşan hayvanları listeleyebilmesi için kullanıcının gireceği başlangıç ve bitiş tarihlerine göre
-    // aşı koruyuculuk tarihi bu aralıkta olan hayvanların listesini geri döndüren API end  point'ini oluşturmak.
+    @Override
+    public void delete(Long id) {
+        vaccineRepo.delete(getById(id));
+    }
+
     @Override
     public List<Vaccine> getVaccinesWithProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate) {
         return vaccineRepo.findByProtectionFinishDateBetween(startDate, endDate);
     }
 
+    @Override
+    public AnimalResponse getAnimalResponse(Long id) {
+        return modelMapper
+                .forResponse()
+                .map(getById(id).getAnimal(), AnimalResponse.class);
+    }
 }
