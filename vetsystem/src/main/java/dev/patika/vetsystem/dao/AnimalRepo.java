@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnimalRepo extends JpaRepository<Animal, Long> {
@@ -17,6 +18,6 @@ public interface AnimalRepo extends JpaRepository<Animal, Long> {
 
     // 16-Hayvanları isme göre filtrelemek
     @Query(value = "Select * From Animal Where Name ILIKE %?1%", nativeQuery = true)
-    List<Animal> findAnimalsByName(String name);
+    Optional<Animal> findByName(String name);
 
 }
