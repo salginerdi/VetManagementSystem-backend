@@ -12,6 +12,7 @@ Veterinary Management System, veterinerlerin ve personelin hayvan sahipleri, ran
 - Doktor müsait günü kaydı
 - Randevu kaydı
 - Hayvana ait aşı kaydı
+- Raporlama İşlemi
 - Filtreleme işlemleri (Hayvanlar, Hayvan Sahipleri, Randevular vs.)
 - Aşı koruyuculuk kontrolü
 - Exception kullanımı ve HTTP durum kodları
@@ -58,6 +59,7 @@ The Veterinary Management System is a platform where veterinarians and staff can
 - Doctor availability scheduling
 - Appointment scheduling
 - Vaccination records for animals
+- Reporting process
 - Filtering operations (Animals, Animal Owners, Appointments, etc.)
 - Vaccination protection check
 - Usage of exceptions and HTTP status codes
