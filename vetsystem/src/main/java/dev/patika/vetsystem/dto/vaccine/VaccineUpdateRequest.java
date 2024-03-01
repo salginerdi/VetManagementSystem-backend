@@ -1,6 +1,7 @@
 package dev.patika.vetsystem.dto.vaccine;
 
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
+import dev.patika.vetsystem.dto.report.ReportUpdateRequest;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
@@ -27,4 +28,6 @@ public class VaccineUpdateRequest {
     private LocalDate protectionFinishDate;
 
     private AnimalUpdateRequest animal;
+
+    private ReportUpdateRequest report;
 }

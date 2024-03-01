@@ -2,6 +2,7 @@ package dev.patika.vetsystem.dto.vaccine;
 
 import dev.patika.vetsystem.dto.animal.OnlyAnimalResponse;
 import dev.patika.vetsystem.dto.doctor.OnlyDoctorResponse;
+import dev.patika.vetsystem.dto.report.OnlyReportResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,4 +21,5 @@ public class VaccineResponse {
     private LocalDate protectionStartDate;
     private LocalDate protectionFinishDate;
     private OnlyAnimalResponse animal;
+    private OnlyReportResponse report;
 }

@@ -1,6 +1,7 @@
 package dev.patika.vetsystem.dto.vaccine;
 
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
+import dev.patika.vetsystem.dto.report.ReportUpdateRequest;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -27,4 +28,6 @@ public class VaccineSaveRequest {
     private LocalDate protectionFinishDate;
 
     private AnimalUpdateRequest animal;
+
+    private ReportUpdateRequest report;
 }
