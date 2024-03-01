@@ -2,10 +2,7 @@ package dev.patika.vetsystem.dto.doctor;
 
 import dev.patika.vetsystem.dto.appointment.OnlyAppointmentResponse;
 import dev.patika.vetsystem.dto.availabledate.OnlyAvailableDateResponse;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
