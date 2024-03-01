@@ -1,6 +1,7 @@
 package dev.patika.vetsystem.dto.animal;
 
 import dev.patika.vetsystem.dto.customer.OnlyCustomerResponse;
+
 import dev.patika.vetsystem.dto.vaccine.OnlyVaccineResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
