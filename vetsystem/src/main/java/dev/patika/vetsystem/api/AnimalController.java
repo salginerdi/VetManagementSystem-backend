@@ -58,6 +58,16 @@ public class AnimalController {
         return new ResponseEntity<>(animalService.getPageResponse(page, pageSize), HttpStatus.OK);
     }
 
+    @GetMapping("get-customer/{id}")
+    public ResponseEntity<?> getCustomerResponse(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(animalService.getCustomerResponse(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-customer-animals/{customerId}")
+    public ResponseEntity<?> getCustomerAnimalResponses(@PathVariable("customerId") Long customerId) {
+        return new ResponseEntity<>(animalService.getAllAnimalResponsesByCustomerId(customerId), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         animalService.delete(id);
