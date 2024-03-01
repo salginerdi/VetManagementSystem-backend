@@ -39,4 +39,5 @@ public class Animal {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Customer customer;
+
 }
