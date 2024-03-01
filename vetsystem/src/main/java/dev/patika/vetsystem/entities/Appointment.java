@@ -20,9 +20,13 @@ public class Appointment {
 
     private LocalDateTime appointmentDate;
 
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "appointment", cascade = CascadeType.REMOVE)
+    private Report report;
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Animal animal;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Doctor doctor;
+
 }
