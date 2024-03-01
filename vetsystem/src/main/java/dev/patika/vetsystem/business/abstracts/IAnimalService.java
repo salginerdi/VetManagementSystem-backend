@@ -1,13 +1,11 @@
 package dev.patika.vetsystem.business.abstracts;
 
-import dev.patika.vetsystem.dto.PageResponse;
 import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.animal.AnimalSaveRequest;
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
+import dev.patika.vetsystem.dto.customer.CustomerResponse;
 import dev.patika.vetsystem.entities.Animal;
-import org.springframework.data.domain.Page;
 
-import java.time.LocalDate;
 import java.util.List;
 
 public interface IAnimalService {
@@ -22,5 +20,9 @@ public interface IAnimalService {
 
     // 16-Hayvanları isme göre filtrelemek
     List<AnimalResponse> getAnimalsByName(String name);
+
+    CustomerResponse getCustomerResponse(Long id);
+
+    List<AnimalResponse> getAllAnimalResponsesByCustomerId(Long customerId);
 
 }
