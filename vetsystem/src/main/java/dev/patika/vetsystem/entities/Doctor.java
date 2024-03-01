@@ -19,9 +19,9 @@ public class Doctor {
     private Long id;
 
     private String name;
-
+    @Column(unique=true)
     private  String phone;
-
+    @Column(unique=true)
     private String mail;
 
     private String address;
