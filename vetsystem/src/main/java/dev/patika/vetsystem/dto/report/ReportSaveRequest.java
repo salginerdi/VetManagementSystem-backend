@@ -14,6 +14,6 @@ public class ReportSaveRequest {
     private String title;
     private String diagnosis;
     private double price;
-    
+
     private AppointmentUpdateRequest appointment;
 }
