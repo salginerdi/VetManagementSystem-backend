@@ -78,9 +78,12 @@ public class AppointmentManager implements IAppointmentService {
            throw new NotFoundException("Doctor is not available at this date");
        }
 
-        Optional<Appointment> hourConflict = this.appointmentRepo.checkForConflictingAppointmentHours(
-                appointmentSaveRequest.getAppointmentDate()
+        Optional<Appointment> hourConflict = this.appointmentRepo.checkForConflictingAppointmentHoursByHourAndDoctorId(
+                appointmentSaveRequest.getAppointmentDate(),
+                appointmentSaveRequest.getDoctor().getId()
+
         );
+
         if (hourConflict.isPresent())
             throw new NotFoundException("There is an hour conflict present");
     }
