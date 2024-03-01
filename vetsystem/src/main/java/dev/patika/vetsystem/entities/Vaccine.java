@@ -29,4 +29,7 @@ public class Vaccine {
     @ManyToOne(fetch = FetchType.EAGER)
     private Animal animal;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Report report;
+
 }
