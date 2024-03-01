@@ -6,6 +6,7 @@ import dev.patika.vetsystem.dao.AnimalRepo;
 import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.animal.AnimalSaveRequest;
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
+import dev.patika.vetsystem.dto.customer.CustomerResponse;
 import dev.patika.vetsystem.entities.Animal;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +27,7 @@ public class AnimalManager implements IAnimalService {
     @Override
     public Animal getById(Long id) {
         return animalRepo.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("Animal with ID " + id + " not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Animal with ID " + id + " not found"));
     }
 
     @Override
@@ -43,8 +45,8 @@ public class AnimalManager implements IAnimalService {
 
         return animalPage.stream().map(animal ->
                         modelMapper
-                        .forResponse()
-                        .map(animal, AnimalResponse.class))
+                                .forResponse()
+                                .map(animal, AnimalResponse.class))
                 .toList();
     }
 
@@ -79,11 +81,28 @@ public class AnimalManager implements IAnimalService {
 
     @Override
     public List<AnimalResponse> getAnimalsByName(String name) {
-        return animalRepo.findByName(name)
+        return animalRepo.findByNameIgnoreCaseContaining(name)
                 .stream().map(animal ->
                         modelMapper
-                        .forResponse()
-                        .map(animal, AnimalResponse.class))
+                                .forResponse()
+                                .map(animal, AnimalResponse.class))
+                .toList();
+    }
+
+    @Override
+    public CustomerResponse getCustomerResponse(Long id) {
+        return modelMapper
+                .forResponse()
+                .map(getById(id).getCustomer(), CustomerResponse.class);
+    }
+
+    @Override
+    public List<AnimalResponse> getAllAnimalResponsesByCustomerId(Long customerId) {
+        return animalRepo.findAllByCustomerId(customerId)
+                .stream().map(
+                        animal -> modelMapper
+                                .forResponse()
+                                .map(animal, AnimalResponse.class))
                 .toList();
     }
 }
