@@ -23,7 +23,6 @@ public class AppointmentUpdateRequest {
     private Long id;
 
     @NotNull(message = "Randevu zamanı alanı boş bırakılamaz!")
-    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
     @FutureOrPresent
     private LocalDateTime appointmentDate;
 
