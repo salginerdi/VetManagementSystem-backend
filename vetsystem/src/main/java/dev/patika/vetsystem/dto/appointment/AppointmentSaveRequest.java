@@ -19,7 +19,6 @@ import java.time.LocalDateTime;
 public class AppointmentSaveRequest {
     @NotNull(message = "Randevu zamanı alanı boş bırakılamaz!")
     @FutureOrPresent
-    @JsonFormat(pattern = "yyyy-MM-dd-HH:mm")
     private LocalDateTime appointmentDate;
 
     private AnimalUpdateRequest animal;
