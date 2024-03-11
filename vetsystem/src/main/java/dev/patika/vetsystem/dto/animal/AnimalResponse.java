@@ -23,7 +23,6 @@ public class AnimalResponse {
     private String gender;
     private String colour;
     private LocalDate dateOfBirth;
-    private Long customerId;
     private OnlyCustomerResponse customer;
     private List<OnlyVaccineResponse> vaccines;
 }
