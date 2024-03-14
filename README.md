@@ -12,6 +12,7 @@ Veterinary Management System, veterinerlerin ve personelin hayvan sahipleri, ran
 - Doktor müsait günü kaydı
 - Randevu kaydı
 - Hayvana ait aşı kaydı
+- Raporlama İşlemi
 - Filtreleme işlemleri (Hayvanlar, Hayvan Sahipleri, Randevular vs.)
 - Aşı koruyuculuk kontrolü
 - Exception kullanımı ve HTTP durum kodları
@@ -36,11 +37,14 @@ Projenin çalıştırılması için aşağıdaki adımları izleyebilirsiniz:
 3. Projenin derlenmesi ve çalıştırılması: mvn spring-boot:run
 
 ## UML Diyagramı
-![UML Diagram](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/8ca2a9e8-1685-4d48-a0bd-6d784b92f60e)
+![UML Diagram](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/b364be27-cd1e-4916-a08b-cdaef00e8861)
 
 ## API Endpointleri
 
-![Endpoints](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/e1c6497b-8705-482d-a753-7ed2c1225d52)
+![endpoints-1](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/1f06722b-538d-4ead-af13-5162e08602cc)
+![endpoints-2](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/3d5edeb1-21e6-404d-be85-980d2fcf98b9)
+![endpoints-3](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/48ad5d28-960f-4940-b35f-26f046d50a6b)
+![endpoints-4](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/79fc8a50-c705-44eb-b8c0-6384d1dfaceb)
 
 -------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -58,6 +62,7 @@ The Veterinary Management System is a platform where veterinarians and staff can
 - Doctor availability scheduling
 - Appointment scheduling
 - Vaccination records for animals
+- Reporting process
 - Filtering operations (Animals, Animal Owners, Appointments, etc.)
 - Vaccination protection check
 - Usage of exceptions and HTTP status codes
@@ -82,10 +87,12 @@ To run the project, you can follow these steps:
 3. Compile and run the project: `mvn spring-boot:run`
 
 ## UML Diagram
-![UML Diagram](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/8ca2a9e8-1685-4d48-a0bd-6d784b92f60e)
+![UML Diagram](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/b364be27-cd1e-4916-a08b-cdaef00e8861)
 
 ## API Endpoints
 
-![Endpoints](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/e1c6497b-8705-482d-a753-7ed2c1225d52)
-
+![endpoints-1](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/1f06722b-538d-4ead-af13-5162e08602cc)
+![endpoints-2](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/3d5edeb1-21e6-404d-be85-980d2fcf98b9)
+![endpoints-3](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/48ad5d28-960f-4940-b35f-26f046d50a6b)
+![endpoints-4](https://github.com/salginerdi/Patika-Bootcamp-Hafta-13-VetManagementSystem/assets/110611268/79fc8a50-c705-44eb-b8c0-6384d1dfaceb)
 
