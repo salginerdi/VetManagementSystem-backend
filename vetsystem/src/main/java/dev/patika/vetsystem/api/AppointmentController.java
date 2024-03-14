@@ -53,10 +53,10 @@ public class AppointmentController {
     @GetMapping("/filter/animal")
     public ResponseEntity<?> filterByDateAndAnimal(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
             @RequestParam("animalName") String animalName
     ) {
-        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndAnimalName(startDate,endDate, animalName), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndAnimalName(startDate, endDate, animalName), HttpStatus.OK);
     }
 
     @GetMapping()
