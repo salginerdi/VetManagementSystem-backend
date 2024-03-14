@@ -1,27 +1,13 @@
 package dev.patika.vetsystem.api;
 
-import com.sun.net.httpserver.HttpsServer;
 import dev.patika.vetsystem.business.abstracts.IAnimalService;
-import dev.patika.vetsystem.business.abstracts.ICustomerService;
-import dev.patika.vetsystem.core.config.modelMapper.IModelMapperService;
 import dev.patika.vetsystem.dto.animal.AnimalSaveRequest;
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
-import dev.patika.vetsystem.dto.PageResponse;
-import dev.patika.vetsystem.dto.animal.AnimalResponse;
-import dev.patika.vetsystem.dto.customer.CustomerResponse;
-import dev.patika.vetsystem.dto.vaccine.VaccineResponse;
-import dev.patika.vetsystem.entities.Animal;
-import dev.patika.vetsystem.entities.Customer;
-import dev.patika.vetsystem.entities.Vaccine;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/animals")
@@ -50,6 +36,11 @@ public class AnimalController {
         return new ResponseEntity<>(animalService.getAnimalsByName(name), HttpStatus.OK);
     }
 
+    @GetMapping("/search-by-customer-name")
+    public ResponseEntity<?> searchAnimalsByCustomerName(@RequestParam(name = "customerName") String customerName) {
+        return new ResponseEntity<>(animalService.getAllAnimalResponsesByCustomerName(customerName), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<?> getPageResponse(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
@@ -61,11 +52,6 @@ public class AnimalController {
     @GetMapping("get-customer/{id}")
     public ResponseEntity<?> getCustomerResponse(@PathVariable("id") Long id) {
         return new ResponseEntity<>(animalService.getCustomerResponse(id), HttpStatus.OK);
-    }
-
-    @GetMapping("/get-customer-animals/{customerId}")
-    public ResponseEntity<?> getCustomerAnimalResponses(@PathVariable("customerId") Long customerId) {
-        return new ResponseEntity<>(animalService.getAllAnimalResponsesByCustomerId(customerId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

@@ -8,6 +8,7 @@ import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.appointment.AppointmentResponse;
 import dev.patika.vetsystem.dto.appointment.AppointmentSaveRequest;
 import dev.patika.vetsystem.dto.appointment.AppointmentUpdateRequest;
+import dev.patika.vetsystem.dto.vaccine.VaccineResponse;
 import dev.patika.vetsystem.entities.Animal;
 import dev.patika.vetsystem.entities.Appointment;
 import dev.patika.vetsystem.entities.AvailableDate;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -92,9 +94,13 @@ public class AppointmentManager implements IAppointmentService {
     public AppointmentResponse update(AppointmentUpdateRequest appointmentUpdateRequest) {
         Appointment doesAppointmentExist = getById(appointmentUpdateRequest.getId());
 
+        Appointment updateAppointment =  modelMapper
+                .forRequest()
+                .map(appointmentUpdateRequest, Appointment.class);
+
         modelMapper
                 .forRequest()
-                .map(appointmentUpdateRequest, doesAppointmentExist);
+                .map(updateAppointment, doesAppointmentExist);
 
         return modelMapper
                 .forResponse()
@@ -107,12 +113,16 @@ public class AppointmentManager implements IAppointmentService {
     }
 
     @Override
-    public List<Appointment> findByAppointmentDateAndDoctorId(LocalDateTime appointmentDate, Long doctorId) {
-        return appointmentRepo.findByAppointmentDateAndDoctorId(appointmentDate, doctorId);
+    public List<AppointmentResponse> findByAppointmentDateAndDoctorName(LocalDate startDate, LocalDate endDate, String doctorName) {
+        return appointmentRepo.findByAppointmentDateAndDoctorName(startDate, endDate, doctorName)
+                .stream().map(appointment -> modelMapper.forResponse().map(appointment, AppointmentResponse.class))
+                .toList();
     }
 
     @Override
-    public List<Appointment> findByAppointmentDateAndAnimalId(LocalDateTime appointmentDate, Long animalId) {
-        return appointmentRepo.findByAppointmentDateAndAnimalId(appointmentDate, animalId);
+    public List<AppointmentResponse> findByAppointmentDateAndAnimalName(LocalDate startDate, LocalDate endDate, String animalName) {
+        return appointmentRepo.findByAppointmentDateAndAnimalName(startDate, endDate, animalName)
+                .stream().map(appointment -> modelMapper.forResponse().map(appointment, AppointmentResponse.class))
+                .toList();
     }
 }

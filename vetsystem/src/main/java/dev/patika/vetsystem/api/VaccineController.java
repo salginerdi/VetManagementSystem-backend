@@ -46,9 +46,9 @@ public class VaccineController {
         return new ResponseEntity<>(vaccineService.getResponseById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/get-animal/{id}")
-    public ResponseEntity<?> getAnimalResponse(@PathVariable("id") Long id) {
-        return new ResponseEntity<>(vaccineService.getAnimalResponse(id), HttpStatus.OK);
+    @GetMapping("/search-by-animal-name/{animalName}")
+    public ResponseEntity<?> searchByAnimalName(@PathVariable("animalName") String animalName) {
+        return new ResponseEntity<>(vaccineService.searchByAnimalName(animalName), HttpStatus.OK);
     }
 
     @GetMapping()

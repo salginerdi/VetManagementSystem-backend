@@ -21,9 +21,11 @@ public class VaccineSaveRequest {
     @NotNull(message = "Aşı kodu alanı boş bırakılamaz!")
     private String code;
 
+    @Past
     @NotNull(message = "Aşı koruması başlangıç tarihi alanı boş bırakılamaz!")
     private LocalDate protectionStartDate;
 
+    @FutureOrPresent
     @NotNull(message = "Aşı koruma bitiş tarihi alanı boş bırakılamaz!")
     private LocalDate protectionFinishDate;
 

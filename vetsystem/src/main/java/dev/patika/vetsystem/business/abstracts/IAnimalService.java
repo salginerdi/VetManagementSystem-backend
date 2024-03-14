@@ -20,9 +20,7 @@ public interface IAnimalService {
 
     // 16-Hayvanları isme göre filtrelemek
     List<AnimalResponse> getAnimalsByName(String name);
+    List<AnimalResponse> getAllAnimalResponsesByCustomerName(String customerName);
 
     CustomerResponse getCustomerResponse(Long id);
-
-    List<AnimalResponse> getAllAnimalResponsesByCustomerId(Long customerId);
-
 }

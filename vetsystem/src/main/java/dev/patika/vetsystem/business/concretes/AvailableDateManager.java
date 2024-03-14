@@ -3,12 +3,11 @@ package dev.patika.vetsystem.business.concretes;
 import dev.patika.vetsystem.business.abstracts.IAvailableDateService;
 import dev.patika.vetsystem.core.config.modelMapper.ModelMapperService;
 import dev.patika.vetsystem.dao.AvailableDateRepo;
-import dev.patika.vetsystem.dto.animal.AnimalResponse;
 import dev.patika.vetsystem.dto.availabledate.AvailableDateResponse;
 import dev.patika.vetsystem.dto.availabledate.AvailableDateSaveRequest;
 import dev.patika.vetsystem.dto.availabledate.AvailableDateUpdateRequest;
 import dev.patika.vetsystem.dto.customer.CustomerResponse;
-import dev.patika.vetsystem.entities.Animal;
+import dev.patika.vetsystem.entities.AvailableDate;
 import dev.patika.vetsystem.entities.AvailableDate;
 import dev.patika.vetsystem.entities.Customer;
 import jakarta.persistence.EntityNotFoundException;
@@ -69,9 +68,13 @@ public class AvailableDateManager implements IAvailableDateService {
     public AvailableDateResponse update(AvailableDateUpdateRequest availableDateUpdateRequest) {
         AvailableDate doesAvailableDateExist = getById(availableDateUpdateRequest.getId());
 
+        AvailableDate updateAvailableDate =  modelMapper
+                .forRequest()
+                .map(availableDateUpdateRequest, AvailableDate.class);
+
         modelMapper
                 .forRequest()
-                .map(availableDateUpdateRequest, doesAvailableDateExist);
+                .map(updateAvailableDate, doesAvailableDateExist);
 
         return modelMapper
                 .forResponse()

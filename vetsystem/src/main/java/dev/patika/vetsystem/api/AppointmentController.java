@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,19 +42,21 @@ public class AppointmentController {
     // 24-Kullanıcı tarih aralığı ve doktora göre filtreleme
     @GetMapping("/filter/doctor")
     public ResponseEntity<?> filterByDateAndDoctor(
-            @RequestParam("appointmentDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime appointmentDate,
-            @RequestParam("doctorId") Long doctorId
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("doctorName") String doctorName
     ) {
-        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndDoctorId(appointmentDate, doctorId), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndDoctorName(startDate, endDate, doctorName), HttpStatus.OK);
     }
 
     // 23-Kullanıcı tarih aralığı ve hayvana göre filtreleme
     @GetMapping("/filter/animal")
     public ResponseEntity<?> filterByDateAndAnimal(
-            @RequestParam("appointmentDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime appointmentDate,
-            @RequestParam("animalId") Long animalId
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate,
+            @RequestParam("animalName") String animalName
     ) {
-        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndAnimalId(appointmentDate, animalId), HttpStatus.OK);
+        return new ResponseEntity<>(appointmentService.findByAppointmentDateAndAnimalName(startDate,endDate, animalName), HttpStatus.OK);
     }
 
     @GetMapping()

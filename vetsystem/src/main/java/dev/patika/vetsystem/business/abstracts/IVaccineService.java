@@ -25,7 +25,9 @@ public interface IVaccineService {
 
     // 21-Kullanıcının aşı koruyuculuk bitiş tarihi yaklaşan hayvanları listeleyebilmesi için kullanıcının
     // gireceği başlangıç ve bitiş tarihlerine göre aşı koruyuculuk tarihi bu aralıkta olan hayvanların listesini geri döndüren API end  point'ini oluşturmak.
-    List<Vaccine> getVaccinesWithProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate);
+    List<VaccineResponse> getVaccinesWithProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate);
 
     AnimalResponse getAnimalResponse(Long id);
+
+    List<VaccineResponse> searchByAnimalName(String animalName);
 }

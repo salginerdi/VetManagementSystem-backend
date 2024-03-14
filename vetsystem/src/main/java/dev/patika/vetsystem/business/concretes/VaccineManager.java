@@ -23,7 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class VaccineManager implements IVaccineService {
     private final VaccineRepo vaccineRepo;
-    private ModelMapperService modelMapper;
+    private final ModelMapperService modelMapper;
 
     @Override
     public Vaccine getById(Long id) {
@@ -78,9 +78,13 @@ public class VaccineManager implements IVaccineService {
     public VaccineResponse update(VaccineUpdateRequest vaccineUpdateRequest) {
         Vaccine doesVaccineExist = getById(vaccineUpdateRequest.getId());
 
+        Vaccine updateVaccine =  modelMapper
+                .forRequest()
+                .map(vaccineUpdateRequest, Vaccine.class);
+
         modelMapper
                 .forRequest()
-                .map(vaccineUpdateRequest, doesVaccineExist);
+                .map(updateVaccine, doesVaccineExist);
 
         return modelMapper
                 .forResponse()
@@ -93,8 +97,10 @@ public class VaccineManager implements IVaccineService {
     }
 
     @Override
-    public List<Vaccine> getVaccinesWithProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate) {
-        return vaccineRepo.findByProtectionFinishDateBetween(startDate, endDate);
+    public List<VaccineResponse> getVaccinesWithProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate) {
+        return vaccineRepo.findByProtectionFinishDateBetween(startDate, endDate)
+                .stream().map(vaccine -> modelMapper.forResponse().map(vaccine, VaccineResponse.class))
+                .toList();
     }
 
     @Override
@@ -102,5 +108,14 @@ public class VaccineManager implements IVaccineService {
         return modelMapper
                 .forResponse()
                 .map(getById(id).getAnimal(), AnimalResponse.class);
+    }
+
+    @Override
+    public List<VaccineResponse> searchByAnimalName(String animalName) {
+        return vaccineRepo.findByAnimalName(animalName)
+                .stream().map(vaccine -> modelMapper
+                        .forResponse()
+                        .map(vaccine, VaccineResponse.class))
+                .toList();
     }
 }

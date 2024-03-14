@@ -61,9 +61,13 @@ public class ReportManager implements IReportService {
     public ReportResponse update(ReportUpdateRequest reportUpdateRequest) {
         Report doesReportExist = getById(reportUpdateRequest.getId());
 
+        Report updateReport =  modelMapper
+                .forRequest()
+                .map(reportUpdateRequest, Report.class);
+
         modelMapper
                 .forRequest()
-                .map(reportUpdateRequest, doesReportExist);
+                .map(updateReport, doesReportExist);
 
         return modelMapper
                 .forResponse()

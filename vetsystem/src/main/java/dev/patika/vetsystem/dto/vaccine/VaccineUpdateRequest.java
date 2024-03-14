@@ -2,7 +2,9 @@ package dev.patika.vetsystem.dto.vaccine;
 
 import dev.patika.vetsystem.dto.animal.AnimalUpdateRequest;
 import dev.patika.vetsystem.dto.report.ReportUpdateRequest;
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
@@ -21,9 +23,11 @@ public class VaccineUpdateRequest {
     @NotNull(message = "Aşı kodu alanı boş bırakılamaz!")
     private String code;
 
+    @Past
     @NotNull(message = "Aşı koruması başlangıç tarihi alanı boş bırakılamaz!")
     private LocalDate protectionStartDate;
 
+    @FutureOrPresent
     @NotNull(message = "Aşı koruma bitiş tarihi alanı boş bırakılamaz!")
     private LocalDate protectionFinishDate;
 

@@ -16,7 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,9 +64,13 @@ public class AnimalManager implements IAnimalService {
     public AnimalResponse update(AnimalUpdateRequest animalUpdateRequest) {
         Animal doesAnimalExist = getById(animalUpdateRequest.getId());
 
+        Animal updateAnimal =  modelMapper
+                .forRequest()
+                .map(animalUpdateRequest, Animal.class);
+
         modelMapper
                 .forRequest()
-                .map(animalUpdateRequest, doesAnimalExist);
+                .map(updateAnimal, doesAnimalExist);
 
         return modelMapper
                 .forResponse()
@@ -97,8 +100,8 @@ public class AnimalManager implements IAnimalService {
     }
 
     @Override
-    public List<AnimalResponse> getAllAnimalResponsesByCustomerId(Long customerId) {
-        return animalRepo.findAllByCustomerId(customerId)
+    public List<AnimalResponse> getAllAnimalResponsesByCustomerName(String customerName) {
+        return animalRepo.findAllByCustomerName(customerName)
                 .stream().map(
                         animal -> modelMapper
                                 .forResponse()

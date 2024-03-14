@@ -12,6 +12,7 @@ import dev.patika.vetsystem.entities.Customer;
 import dev.patika.vetsystem.entities.Doctor;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,10 +26,10 @@ public interface IAppointmentService {
     void delete(Long id);
 
     // 24-Doktor ve tarih aralığına göre filtreleme
-    List<Appointment> findByAppointmentDateAndDoctorId(LocalDateTime appointmentDate, Long doctorId);
+    List<AppointmentResponse> findByAppointmentDateAndDoctorName(LocalDate startDate, LocalDate endDate, String doctorName);
 
     // 23-Hayvan ve tarih aralığına göre filtreleme
-    List<Appointment> findByAppointmentDateAndAnimalId(LocalDateTime appointmentDate, Long animalId);
+    List<AppointmentResponse> findByAppointmentDateAndAnimalName(LocalDate startDate, LocalDate endDate, String animalName);
 
 
 

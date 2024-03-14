@@ -21,4 +21,8 @@ public interface VaccineRepo extends JpaRepository<Vaccine, Long> {
     // 21-Kullanıcının aşı koruyuculuk bitiş tarihi yaklaşan hayvanları listeleyebilmesi için kullanıcının gireceği başlangıç ve bitiş tarihlerine göre aşı
     // koruyuculuk tarihi bu aralıkta olan hayvanların listesini geri döndüren API end  point'ini oluşturmak.
     List<Vaccine> findByProtectionFinishDateBetween(LocalDate startDate, LocalDate endDate);
+
+    @Query(value=" Select vaccine.* From vaccine INNER JOIN animal ON vaccine.animal_id = animal.id" +
+            " WHERE animal.name ILIKE %?1% ", nativeQuery = true)
+    List<Vaccine> findByAnimalName(String animalName);
 }
