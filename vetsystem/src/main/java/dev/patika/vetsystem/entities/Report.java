@@ -21,6 +21,7 @@ public class Report {
     private String diagnosis;
     private double price;
 
+    @JoinColumn(columnDefinition = "appointment_id")
     @OneToOne(fetch = FetchType.EAGER)
     private Appointment appointment;
 
