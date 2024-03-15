@@ -31,7 +31,7 @@ public class ReportController {
     }
 
     @GetMapping
-    public ResponseEntity getPageResponse(
+    public ResponseEntity<?> getPageResponse(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "pageSize", required = false, defaultValue = "10") int pageSize
     ) {
